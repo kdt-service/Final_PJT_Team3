@@ -7,3 +7,4 @@
 
 *.xlsx
 ~/final_pj/**/*.bin
+/final_pj/rpa.py
