@@ -1,9 +1,9 @@
 ./final_pj/youtube_block/client_secrets.json
 ./final_pj/youtube_block/token.pickle
-./final_pj/youtube_api_key.txt
+./**/youtube_api_key.txt
 *.log
 ./final_pj/chrome
 ./final_pj/csv
 
 *.xlsx
-./final_pj/gyoungwon_main/*.bin
+./final_pj/**/*.bin
