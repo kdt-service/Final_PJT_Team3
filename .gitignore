@@ -1,6 +1,6 @@
 /final_pj/youtube_block/client_secrets.json
 /final_pj/youtube_block/token.pickle
-/final_pj/youtube_api_key.text
+/final_pj/youtube_api_key
 *.log
 /final_pj/chrome
 /final_pj/csv
