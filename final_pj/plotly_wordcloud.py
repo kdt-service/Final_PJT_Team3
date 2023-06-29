@@ -20,7 +20,11 @@ def plotly_wordcloud(df1, df2):
             except:
                 continue
             hash_tags += tmp
-
+        
+        tmp = []
+        for word in hash_tags:
+            tmp.append(word.upper())
+        hash_tags = tmp
         common_words = Counter(hash_tags).most_common(20)
         wc = WordCloud(font_path = font_path, max_font_size=50, background_color='white')
         cloud = wc.generate_from_frequencies(dict(common_words))

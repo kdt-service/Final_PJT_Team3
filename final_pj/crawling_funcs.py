@@ -46,14 +46,7 @@ def channel_table(url):
     # 크롤링한 시각 crawled_at
     crawled_at = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    # print('cn : ', channel_name)
-    # print('ci : ', channel_id)
-    # print('sb : ', subscriber)
-    # print('vc : ', video_count)
-    # print('tvc : ', total_view_count)
 
-    # print('SLEEP 10 SEC')
-    # time.sleep(10)
 
     tb_channel = pd.DataFrame({'id':[channel_id], "platform":[platform], 'channel_name':[channel_name], 
                               'channel_id' :[channel_id], 'subscriber': [subscriber],'video_count':[video_count], 
@@ -189,22 +182,6 @@ def comment_table(url):
     tb_comments.to_csv(f"/home/ubuntu/final_pj/csvs/tb_comment_{now}.csv", index = False )
     file_name = f'tb_comment_{now}.csv'
     return file_name
-
-# def open_key(): # youtube_api_key 따로 youtube_api_key.txt에 저장해놓은 내용 읽기
-#     hour = dt.datetime.now().hour
-#     f = open('/home/ubuntu/final_pj/youtube_api_key',"rt")
-#     line = f.readline() # 다은's
-#     if hour >10 and hour <14 : # 10시에서 13시 사이이면 석호님 googleapikey  
-#         line = f.readline()
-#     if hour >=14 and hour <19 : # 2시에서 5시 사이이면 수연님 googleapikey  
-#         line = f.readline()
-#         line = f.readline()
-#     if hour >= 19 : # 오후 5시 이후이면 석호님 googleapikey  
-#         line = f.readline()
-#         line = f.readline()
-#         line = f.readline()
-#     f.close()
-#     return line
 
 def open_key2():
     with open('/home/ubuntu/final_pj/youtube_api_key',"r") as f:

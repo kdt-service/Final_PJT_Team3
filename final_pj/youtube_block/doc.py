@@ -57,10 +57,11 @@ def get_authenticated_service():
 def main():
     youtube = get_authenticated_service()
     word_list =  get_block_wordlist('Example_Channel')
+    print(word_list)
     for word in word_list :
         id_list = get_comments_with_word('Example_Channel', word)
         for idname in id_list :
-        #idname = 'Ugw2zzrWKInW27BT6ep4AaABAg' # 이런 고양이
+            print(idname)
             set_moderation_status(youtube, 'heldForReview',idname)
             print(f'{idname} set_moderation_status 완료')
         print(f'{word} 포함 댓글 처리 완료')

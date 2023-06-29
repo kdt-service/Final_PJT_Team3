@@ -318,7 +318,8 @@ def channel_name_to_id(channel_title):
 def get_comments_with_word(channel_title, word):
     sql= init_mysql()
     channel_id = channel_name_to_id(channel_title)
-    query =  "SELECT * FROM tb_comment WHERE video_id in (select id from tb_video where channel_id = '{channel_id}' ) and content LIKE '%{word}%' ;"
+    query = f"SELECT * FROM tb_comment WHERE video_id in (select id from tb_video where channel_id = '{channel_id}' ) and content LIKE '%{word}%' ;"
+    print(query)
     df=pd.read_sql_query(query, sql)
     sql.close()
     result = df['id'].to_list()

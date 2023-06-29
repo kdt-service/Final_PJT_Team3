@@ -25,13 +25,18 @@ def preprocessing(df):
         result = re.sub('[\n\t]', ' ', result) # 줄바꿈, 텝 -> 띄어쓰기로 대체
         result = re.sub('(&quot;)', '' , result) # &quot; 제거
         result = re.sub(r'@[^ ]*', '', result) # 답댓글시 @닉네임 제거
-        
+        result = re.sub('(&lt;)', '' , result) # &lt; 제거 
+        result = re.sub('(&gt;)', '' , result) #&gt; 제거  
+        result = re.sub('(<del>)', '' , result) # <del>
+        result = re.sub('(</del>)', '' , result) # <del> <strike>
+        result = re.sub('(<strike>)', '' , result) # <strike> 
+        result = re.sub('(</strike>)', '' , result) # <strike> 
+
         result = emoticon_normalize(result, num_repeats=2)  # 이모지, 특수문자 정규화
         result = repeat_normalize(result, num_repeats=2)
         
         return result.strip()
-
-    #df = pd.read_csv(file_path) # 파일 위치 읽기
+    
     df.dropna(inplace=True) # nan value 있는 행 제거
     df.drop_duplicates(inplace=True) #중복 행 제거 
     df = df[df['content'].str.len() > 1] # 댓글 길이가 한 글자면 제거
@@ -103,7 +108,7 @@ def identify_lang(df):
         if kor_text >= text*0.5: # 절반이상이 한글이면 
             df.loc[i, 'lang'] = 'ko'
             
-    for i in range(len(df)): #emoji-> 한글 변환
+    for i in range(len(df)): #emoji->한국어 텍스트 변환
         if df.loc[i,'lang']=='ko':
             temp = df.loc[i,'processed_content']
             demoji_text = emoji.demojize(temp, language = 'ko')

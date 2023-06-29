@@ -105,11 +105,11 @@ def get_old_highcom_video(id_text,df):
     aws.close()
 
 
-    #2. DB에서 두번째 최신기준으로 tb_video_log들 가져오기 #두번째가 없는 경우에는 Empty 
+    #2. DB에서 세번째 최신기준으로 tb_video_log들 가져오기 #두번째가 없는 경우에는 Empty 
     aws = init_mysql()
     cur = aws.cursor()
     second_query = f'''SELECT * FROM tb_video_log k
-    WHERE 2 = (SELECT COUNT( DISTINCT crawled_at) FROM tb_video_log u 
+    WHERE 4 = (SELECT COUNT( DISTINCT crawled_at) FROM tb_video_log u 
             WHERE k.crawled_at <= u.crawled_at AND k.video_id = u.video_id
             AND u.video_id in (select id from tb_video where channel_id = '{WANT_CHANNEL_ID}'
     )                    GROUP BY u.video_id) ;'''
@@ -123,14 +123,14 @@ def get_old_highcom_video(id_text,df):
     new_df = pd.merge(recent_result, second_result, on= ['video_id'])
     
     new_df['comment_diff']= new_df['comment_count_x']-new_df['comment_count_y']
-    
+    print(new_df)
     new_df= new_df[['video_id', 'comment_diff']].sort_values('comment_diff' ,  ascending=False) # 조회수 차이 큰 것대로 정렬 완료! 
     
     high_diff_videoid = new_df.iloc[0]['video_id']
     return oldest_videoid, high_diff_videoid
 
 if __name__ == "__main__":
-    channel_id = 'UC4ZA57iJrf73bJlApKFeLRw'
+    channel_id = 'UCve6VRybPfGwj4h3mZT-j4w'
     result_df = get_video_list(channel_id) # 채널 id 넘겨받고 
    
     oldest_videoid, high_diff_videoid=get_old_highcom_video(channel_id,result_df)

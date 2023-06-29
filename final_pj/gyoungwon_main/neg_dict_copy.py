@@ -18,7 +18,7 @@ def negdict_get_comment(channel_id):
 
 def mecab_pos(df): #명사 추출, 불용어 제거해서 빈도수 계산 후 정렬
     mecab = MeCab()
-    with open('/home/ubuntu/final_pj/gyoungwon_main/STOPWORD.txt', 'r') as f: #얘네 변수로 줘서 밖에 뺴놔도 됨, 그대신 인자줄때 같이 줘야함
+    with open('/home/ubuntu/final_pj/gyoungwon_main/STOPWORD.txt', 'r') as f:
         stop_words = f.read().splitlines()
 
     with open('/home/ubuntu/final_pj/gyoungwon_main/EOMI.TXT', 'r') as f:
@@ -54,7 +54,7 @@ def mecab_diff_set(popular_mecab_nouns, unpopular_mecab_nouns):
     set1 =set(popular_mecab_noun)
     set2 = set(unpopular_mecab_noun)
     diff = set1.difference(set2) # 'popular_mecab_noun - unpopular_mecab_noun'의 차집합
-    diff_with_counts = [(value[0], value[1]) for value in popular_mecab_nouns if value[0] in diff] #diff에서 뽑힌 값과 result 첫번째 값 비교해서 일치하면 빈도수 같이 가져오기
+    diff_with_counts = [(value[0], value[1]) for value in popular_mecab_nouns if value[0] in diff] #diff에서 뽑힌 값과 popular_mecab_nouns 첫번째 값 비교해서 일치하면 빈도수 같이 가져오기
     mecab_list=diff_with_counts[:150] #상위 150개까지만 짜르기
     mecab_neg_list = []
 
@@ -68,7 +68,7 @@ def mecab_diff_set(popular_mecab_nouns, unpopular_mecab_nouns):
 
 def okt_pos(df):
     okt = Okt() 
-    with open('/home/ubuntu/final_pj/gyoungwon_main/STOPWORD.txt', 'r') as f: #얘네 변수로 줘서 밖에 뺴놔도 됨, 그대신 인자줄때 같이 줘야함
+    with open('/home/ubuntu/final_pj/gyoungwon_main/STOPWORD.txt', 'r') as f: 
         stop_words = f.read().splitlines()
 
     with open('/home/ubuntu/final_pj/gyoungwon_main/EOMI.TXT', 'r') as f:
@@ -103,12 +103,11 @@ def okt_diff_set(popular_okt_nouns, unpopular_okt_nouns):
     set1 =set(popular_okt_noun)
     set2 = set(unpopular_okt_noun)
     diff = set1.difference(set2) # 'popular_Okt_noun - unpopular_Okt_noun'의 차집합
-    diff_with_counts = [(value[0], value[1]) for value in popular_okt_nouns if value[0] in diff] #diff에서 뽑힌 값과 result 첫번째 값 비교해서 일치하면 빈도수 같이 가져오기
+    diff_with_counts = [(value[0], value[1]) for value in popular_okt_nouns if value[0] in diff] #diff에서 뽑힌 값과 popular_okt_nouns 첫번째 값 비교해서 일치하면 빈도수 같이 가져오기
     okt_list=diff_with_counts[:150] #상위 150개까지만 짜르기
     okt_neg_list = []
 
     for word in okt_list:
-        #if okt.pos(word[0])[0][1] == 'Noun':
         if len(word[0])>=2:
             okt_neg_list.append(word)
 

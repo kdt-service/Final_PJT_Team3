@@ -58,8 +58,9 @@ if selected == '서비스 정보 소개':
     st.write('이전 시간대의 조회수 대비 기준 시간대의 조회수 상승률의 평균을 제공해줍니다.')
     st.markdown("**<p align='left'> <font size = '3'> 2️⃣시간대 별 업로드 N일차에 상승한 조회수  </font></p>**", unsafe_allow_html=True)
     st.write('시간대별로 업로드 된지 N일차에 얼만큼 조회수가 상승했는지를 보여줍니다.')
-    st.markdown("**<p align='left'> <font size = '3'> 3️⃣댓글 언어분석  </font></p>**", unsafe_allow_html=True)
+    st.markdown("**<p align='left'> <font size = '3'> 3️⃣댓글 언어 분석  </font></p>**", unsafe_allow_html=True)
     st.write('동영상의 댓글 언어 종류와 비율을 보여줍니다.')
+    st.write('동영상의 댓글을 감성 분석 한 후 긍부정 비율과 날짜별 시계열 그래프를 보여줍니다.')
 
 
 
@@ -69,10 +70,12 @@ if selected == '서비스 정보 소개':
     st.markdown("**<p align='left'> <font size = '3'> 1️⃣조회수 / 좋아요 / 댓글 추이 그래프  </font></p>**", unsafe_allow_html=True)
     st.write('구독자 대비 조회수 비율을 백분율로 보여드립니다.')
     st.write('좋아요 수와 댓글 수를 시계열 꺾은선 그래프로 보여드립니다. ')
-    st.markdown("**<p align='left'> <font size = '3'> 2️⃣시간대 별 업로드 N일차에 상승한 조회수  </font></p>**", unsafe_allow_html=True)
-    st.write('시간대별로 업로드 된지 N일차에 얼만큼 조회수가 상승했는지를 보여줍니다.')
-    st.markdown("**<p align='left'> <font size = '3'> 3️⃣댓글 언어분석  </font></p>**", unsafe_allow_html=True)
-    st.write('동영상의 댓글 언어 종류와 비율을 보여줍니다.')
+    st.markdown("**<p align='left'> <font size = '3'> 2️⃣채널별 주요 해시태그 20개  </font></p>**", unsafe_allow_html=True)
+    st.write('채널별로 주요 해시태그들을 워드클라우드 형태로 보여드립니다.')
+    st.markdown("**<p align='left'> <font size = '3'> 3️⃣실시간 그래프 기능  </font></p>**", unsafe_allow_html=True)
+    st.write('실시간 그래프를 체크하면 최신 업로드 동영상 5개에 대한 그래프를 연달아서 확인 할 수 있습니다.')
+
+
 
 
 
@@ -82,7 +85,7 @@ if selected == '서비스 정보 소개':
     st.markdown("**<p align='left'> <font size = '3'> 1️⃣채널의 부정어 DB 목록 확인  </font></p>**", unsafe_allow_html=True)
     st.write('해당 채널의 부정어로 등록되어 DB에 쌓여있는 단어들을 확인 할 수 있습니다.')
     st.markdown("**<p align='left'> <font size = '3'> 2️⃣부정어 후보 단어 제시 & 해당 단어가 포함된 부정적 댓글 확인  </font></p>**", unsafe_allow_html=True)
-    st.write('형태소 분석과 감정분석을 진행하여 도출한 부정어를 후보로 제공해주고, 해당 단어가 포함된 실제 댓글을 보여줍니다.')
+    st.write('형태소 분석과 감성 분석을 진행하여 도출한 부정어를 후보로 제공해주고, 해당 단어가 포함된 실제 댓글을 보여줍니다.')
     st.markdown("**<p align='left'> <font size = '3'> 3️⃣부정어 등록 & 삭제  </font></p>**", unsafe_allow_html=True)
     st.write('부정어로 등록할 단어와 부정어에서 삭제할 단어를 사용자에게 입력받습니다. ')
     st.write('부정어로 등록된 단어가 포함된 댓글들은 최대 3분안에 화면에서 보여지지 않게 됩니다. 댓글 유형이 검토대기중으로 바뀌어 사용자의 승인 후에 댓글 화면에 보여지게 됩니다.')
@@ -184,14 +187,17 @@ if selected == 'Youtube 분석결과' :
        
 
 if  selected == '개인채널(Youtube)':
+    st.markdown("**<p align='center'> <font size = '8'> Youtube 개인 채널 분석 </font></p>**", unsafe_allow_html=True)
+    st.subheader('')
 
     channel_df = get_channel_list(where = " where platform = '유튜브'")
     check_lst = [0 for _ in range(len(channel_df))] 
     channels  = channel_df['channel_name'].values
     channel_ids = channel_df['id'].values
 
-    channel1 = st.selectbox('채널 선택', channels)
+    channel1 = st.selectbox('채널 선택을 선택해주세요', channels)
     # selected_channels.append(channel_ids[np.where(channels == channel1)][0])
+    st.subheader('')
 
     # channel_df = get_channel_list()
     _, name_to_id = make_channel_list(channel_df)
@@ -206,7 +212,7 @@ if  selected == '개인채널(Youtube)':
     # st.dataframe(plot_df)
     show_df = plot_df.groupby(['video_id']).max()
     show_df = show_df[['title', 'views', 'likes', 'comments','uploaded_at']].sort_values('uploaded_at', ascending=False).reset_index(drop=True)
-    show_df.columns = ['제목', '조회수', '좋아요', '댓글', '업로드 시간']
+    show_df.columns = ['동영상 제목', '조회수', '좋아요', '댓글', '업로드 날짜']
 
     # 증가율 계산
     df4 = pd.DataFrame()
@@ -246,7 +252,7 @@ if  selected == '개인채널(Youtube)':
     df4 = df4.groupby(['hour'])['ratio2'].mean().reset_index()
     
     # df4['ratio2'] =         (df4['ratio2']/len(df4['diff_days'].unique()))
-    st.write("<p style=\"font-size:26px;\"> 최근 5개 영상 시간대별 조회수 평균 상승률</p>", unsafe_allow_html=True)
+    st.write("**<p style=\"font-size:26px;\"> 최신 업로드 동영상 5개 시간대별 조회수 평균 상승률</p>**", unsafe_allow_html=True)
 
     colorscales = px.colors.named_colorscales()
     fig = px.bar(
@@ -264,15 +270,18 @@ if  selected == '개인채널(Youtube)':
     fig.update_layout(
         uniformtext_minsize=10, uniformtext_mode='hide'
         )
-    
-    st.write("<p style=\"font-size:10px; \"> [(기준 시간 - 이전 시간)조회수 / 최대 조회수] 평균 </p>", unsafe_allow_html=True)
+    st.write("<p style=\"font-size:16px; \"> 📺이전 시간대에 비하여 기준 시간대에 조회수가 얼마나 상승했는지를 보여줍니다.  </p>", unsafe_allow_html=True)
+    st.write("<p style=\"font-size:12px; \">  상승률은 [(기준 시간 - 이전 시간)조회수 / 최대 조회수]의 평균으로 계산되었습니다. 2시간 간격으로 시간대가 설정되어 있습니다.</p>", unsafe_allow_html=True)
     st.plotly_chart(fig,use_container_width=True)
-    
-    
-    st.dataframe(show_df,use_container_width=True)
-    
+    st.write("<p style=\"font-size:12px; \">  최신 업로드 동영상 5개에 대한 정보입니다. </p>", unsafe_allow_html=True)
 
-    video_select = st.selectbox('분석을 원하는 동영상을 선택해주세요.(최근 5개 영상)' , (df['title'][0], df['title'][1],df['title'][2],df['title'][3],df['title'][4]))
+    st.dataframe(show_df,use_container_width=True)
+    st.subheader('')
+    st.subheader('동영상 별 분석')
+    video_select = st.selectbox('최신 업로드 동영상 5개 중에서 분석을 원하는 동영상을 선택해주세요.' , (df['title'][0], df['title'][1],df['title'][2],df['title'][3],df['title'][4]))
+    # st.write("<p style=\"font-size:12px; \"> 최신 업로드 동영상 5개 정보를 참고하세요.</p>", unsafe_allow_html=True)
+
+    
     recent_video = daily_compare_df([channel_ids[np.where(channels == channel1)][0]], title_to_idx[video_select], is_compare=False).set_index('time')
 
     # 증가율 계산
@@ -309,10 +318,13 @@ if  selected == '개인채널(Youtube)':
 
         df3 = pd.concat([df3, t])
     
-    # st.dataframe(recent_video)
-    st.write("<p style=\"font-size:26px;\"> 시간대별 상승 조회수</p>", unsafe_allow_html=True)
+    
+    st.write("**<p style=\"font-size:26px;\"> 시간대별 조회수 증가량</p>**", unsafe_allow_html=True)
+    st.write("<p style=\"font-size:16px; \"> 🎥 시간대 별 동영상 업로드 후 N일차에 따른 조회수 증가량을 보여줍니다.  </p>", unsafe_allow_html=True)
+
     video_id = recent_video[recent_video['title'] == video_select]['video_id'].unique()[0]
-    st.write(f":movie_camera: : [{video_select}](https://www.youtube.com/watch?v={video_id}) (업로드 일자 : {recent_video['uploaded_at'].unique()[0]})", unsafe_allow_html=True)
+    upload_date = recent_video['uploaded_at'].unique()[0].strftime("%Y년 %m월 %d일")
+    st.write(f"🎥  [{video_select}](https://www.youtube.com/watch?v={video_id}) 은  {upload_date}에 업로드 되었습니다.", unsafe_allow_html=True)
     
     
     df3.rename(columns={'diff_days' : '업로드 N일차'}, inplace=True)
@@ -340,55 +352,65 @@ if  selected == '개인채널(Youtube)':
 
     st.plotly_chart(fig,use_container_width=True)
 
-    st.markdown("<p align='left'> <font size = '4'> ⭐ 댓글 분석.   </font></p>", unsafe_allow_html=True)
+    st.write("**<p style=\"font-size:26px;\"> 댓글 분석 </p>**", unsafe_allow_html=True)
+    st.write("**<p style=\"font-size:20px;\"> 1️⃣ 댓글 언어 분석 </p>**", unsafe_allow_html=True)
+    st.write("<p style=\"font-size:16px;\">  동영상 댓글의  언어 종류와 비율을 보여줍니다.</p>", unsafe_allow_html=True)
+    st.write("<p style=\"font-size:12px;\">  전체 댓글의 0.1% 미만의 언어인 경우 etc로 분류됩니다. </p>", unsafe_allow_html=True)
+
+    #댓글 언어분석
     com_col1, com_col2 = st.columns([2,1])
-
-    com_col1.plotly_chart(lang_pie(title_to_id(video_select)),use_container_width=True) #댓글언어분석 파이차트 그리기
+    with st.spinner('댓글 언어 판별 중입니다. 잠시만 기다려주세요. '):
+        lang_df, lang_fig = lang_pie(title_to_id(video_select))
+        com_col1.plotly_chart((lang_fig),use_container_width=True) #댓글언어분석 파이차트 그리기
+        total= lang_df['lang'].sum()
+        com_col2.header("")
+        com_col2.header("")
+        com_col2.header("")
+        com_col2.header("")
+        com_col2.write(f'전체 댓글 수는 {total}개 입니다.')
+        com_col2.write(f"한글 댓글 개수는 {int(lang_df[lang_df['index']=='ko']['lang'])}개 입니다.")
+        com_col2.write(f"영어 댓글 개수는 {int(lang_df[lang_df['index']=='en']['lang'])}개 입니다.")
     
-    com_col3, com_col4 = st.columns([1, 1]) #st.write("댓글 감성 분석")
+    # 댓글 감정분석
+    st.write("**<p style=\"font-size:20px;\"> 2️⃣ 댓글 감성 분석 </p>**", unsafe_allow_html=True)
+    st.write("<p style=\"font-size:16px;\"> 감성 분석 모델로 분석한 댓글의 감성 비율과 실제 댓글들을 보여줍니다. </p>", unsafe_allow_html=True)
+    st.write("<p style=\"font-size:16px;\"> 날짜별 댓글 업로드 개수와 해당 댓글의 감성을 시계열 그래프로 제공합니다. </p>", unsafe_allow_html=True)
 
-    charts_and_comments = emotion_all(title_to_id(video_select))
-    eng_sentiment_chart, kor_sentiment_chart, en_pos_comment, en_neg_comment, ko_pos_comment, ko_neg_comment = charts_and_comments
+    st.write("<p style=\"font-size:12px;\">  현재는 한국어, 영어만 지원합니다. </p>", unsafe_allow_html=True) 
+    
+    com_col3, com_col4 = st.columns([1, 1])
+    
+    with st.spinner('댓글 감성 분석 중입니다. 잠시만 기다려주세요. '):
 
-    com_col3.plotly_chart(kor_sentiment_chart, use_container_width=True)
-    com_col4.plotly_chart(eng_sentiment_chart, use_container_width=True) 
-    
-    my_expander = st.expander(label=('댓글 확인'))
-    
-    with com_col3:
-        with my_expander:
-            st.write("긍정적으로 분석된 한국어 댓글 중 좋아요 상위 댓글")
-            if len(ko_pos_comment) >= 1:
-                for comment in ko_pos_comment: 
-                    st.write(comment)
+        charts_and_comments = emotion_all(title_to_id(video_select))
+        eng_sentiment_chart, kor_sentiment_chart, ko_pos, ko_neg, day_sentiment_chart = charts_and_comments
+
+        com_col3.plotly_chart(kor_sentiment_chart, use_container_width=True)
+        com_col4.plotly_chart(eng_sentiment_chart, use_container_width=True) 
+        
+        my_expander_1 = st.expander(label=('긍정으로 분류된 좋아요 상위 댓글 3개')) 
+        my_expander_2 = st.expander(label=('부정으로 분류된 좋아요 상위 댓글 3개'))
+        
+        with my_expander_1:
+            if len(ko_pos) >= 1:
+                ko_pos_index_reset = ko_pos.reset_index(drop=True)
+                st.dataframe(ko_pos_index_reset, use_container_width=True)
             else:
                 st.write('해당 댓글이 없습니다.')
-            st.write("부정적으로 분석된 한국어 댓글 중 좋아요 상위 댓글")
-            if len(ko_neg_comment) >= 1:
-                for comment in ko_neg_comment:
-                    st.write(comment)
-
-    with com_col4:
-        with my_expander:
-            st.write("긍정적으로 분석된 영어 댓글 중 좋아요 상위 댓글")
-            if len(en_pos_comment) >= 1:
-                for comment in en_pos_comment: 
-                    st.write(comment)
-            else:
-                st.write('해당 댓글이 없습니다.')            
-            st.write("부정적으로 분석된 영어 댓글 중 좋아요 상위 댓글")
-            if len(en_neg_comment) >= 1:
-                for comment in en_neg_comment: 
-                    st.write(comment)
+        with my_expander_2:        
+            if len(ko_neg) >= 1:
+                ko_neg_index_reset = ko_neg.reset_index(drop=True)
+                st.dataframe(ko_neg_index_reset, use_container_width=True)
             else:
                 st.write('해당 댓글이 없습니다.')
+
+    st.plotly_chart(day_sentiment_chart, use_container_width=True)
                 
 if selected == '채널비교(Youtube)':
-    if selected == "채널비교(Youtube)":
-        real_time = st.checkbox('실시간 그래프')
-    else:
-        real_time = False
     
+    st.markdown("**<p align='center'> <font size = '8'> Youtube 채널 비교 분석 </font></p>**", unsafe_allow_html=True)
+    st.subheader('')
+
     channel_df = get_channel_list(where = " where platform = '유튜브'")
     check_lst = [0 for _ in range(len(channel_df))] 
     channels  = channel_df['channel_name'].values
@@ -397,35 +419,42 @@ if selected == '채널비교(Youtube)':
     selected_channels = []
     select_channel1, select_channel2 = st.columns(2)
     with select_channel1:
-        channel1 = st.selectbox('기준 채널', channels)
+        channel1 = st.selectbox('기준 채널을 선택해주세요.', channels)
         selected_channels.append(channel_ids[np.where(channels == channel1)][0])
     
     with select_channel2:
         pop_idx = np.where(channels == channel1)
-        channel2 = st.selectbox('비교 채널', (np.delete(channels, pop_idx)))
+        channel2 = st.selectbox('비교 채널을 선택해주세요.', (np.delete(channels, pop_idx)))
         selected_channels.append(channel_ids[np.where(channels == channel2)][0])
 
-    title = channel1 + ', ' + channel2
+    a1,a2 = st.columns([1,6])
+    if selected == "채널비교(Youtube)":
+        real_time = a1.checkbox('실시간 그래프')
+    else :
+        real_time = False 
+    a2.markdown("<p style=\"font-size:15px; \"> 실시간 그래프를 체크하면 최신 동영상 5개를 기준으로 한 그래프를 연달아서 확인 할 수 있습니다. 그래프는 10초후에 바뀝니다. </p>", unsafe_allow_html=True)
 
-    st.title(f":green[{channel1}]"+ '  VS  ' + f":red[{channel2}]")
-    
+
+    st.subheader('')
+    cc1,cc2,cc3 = st.columns([3,0.5,3])
+    cc1.markdown(f"**<p align='center'> <font size = '18'><span style='color:green'> {channel1} </span></font></p>**", unsafe_allow_html=True)
+    cc2.markdown(f"**<p align='center'> <font size = '18'><span style='color:black'> VS </span></font></p>**", unsafe_allow_html=True)
+    cc3.markdown(f"**<p align='center'> <font size = '18'><span style='color:red'> {channel2} </span></font></p>**", unsafe_allow_html=True)
+    #st.title(f":green[{channel1}]"+ '  VS  ' + f":red[{channel2}]")
+    #st.markdown(f"**<p align='center'> <font size = '23'><span style='color:green'> {channel1} </span> &emsp; VS &emsp; <span style='color:red'> {channel2} </span></font></p>**", unsafe_allow_html=True)
     
     df = compare_df(selected_channels)
     
     channel_lst = list(df['platform'].unique())
     channel_lst.append('전체')
     
-    # channel_filter = st.selectbox("채널 선택", (channel_lst))
-
     placeholder = st.empty()
-
     filter = ['유튜브']
 
     # 비교균 df
     df = df[df['platform'].isin(filter)]
 
     # st.dataframe(df)
-
     df1 = df[df['channel_id'] == selected_channels[0]]
     df2 = df[df['channel_id'] == selected_channels[1]]
 
@@ -434,9 +463,8 @@ if selected == '채널비교(Youtube)':
     df2_sub = get_data_to_csv(f"select subscriber from tb_channel_log where channel_id = '{selected_channels[1]}' order by subscriber desc limit 1")
     
     subscriber_info = { selected_channels[0] : df1_sub['subscriber'].iloc[0],
-                        selected_channels[1] : df2_sub['subscriber'].iloc[0]
-                        }
-
+                        selected_channels[1] : df2_sub['subscriber'].iloc[0]                        }
+    
 
     for i in range(200):
         # 대시보드 
@@ -482,21 +510,23 @@ if selected == '채널비교(Youtube)':
             
             subscriber_diff = df1_sub['subscriber'].iloc[0] - df2_sub['subscriber'].iloc[0]
             line1_5.metric(
-                label = '구독자',
+                label = '구독자 👩‍👧‍👦',
                 value = mertic_number(df1_sub['subscriber'].iloc[0]),
                 delta = mertic_number(subscriber_diff)
             )
-            
+            st.markdown('')
+            st.markdown(f"<p align='right'> <font size = '3'> 선택 채널의 지표수가 기준이 되고, 경쟁 채널과의 차이는 아래 숫자의 화살표로 보여줍니다. <br> ( K는 1,000 (1천), M은 1,000,000 (1백만) )  </font></p>", unsafe_allow_html=True)
             
             subplot_fig = make_subplots(rows=1, cols=3,
                                         subplot_titles=("구독자 대비 조회수 도달률  ", "좋아요", "댓글"))
-
             plot_df = daily_compare_df(selected_channels, i%5, is_compare = False).set_index('time')
+            st.subheader('')
+            st.markdown("<p style=\"font-size:26px; font-weight:bold;\"> 조회수 / 좋아요 / 댓글 추이 </p>", unsafe_allow_html=True)
+
+            videos = '/\n'.join([p + '->' + t for p, t in zip(plot_df['platform'].unique(), plot_df['title'].unique())])
             # st.write("<p style=\"font-size:40px; font-weight:bold;\">최근 5개 영상 정보</p>", unsafe_allow_html=True)
             # st.write("<p style=\"font-size:12px;\">(최근 5개 영상중 조회수가 높은 영상 순서대로 비교 됩니다.)</p>", unsafe_allow_html=True)
-            st.write("<p style=\"font-size:26px; font-weight:bold;\"> 조회수 / 좋아요 / 댓글 추이 </p>", unsafe_allow_html=True)
             # st.write("<p style=\"font-size:26px; font-weight:bold;\">구독자 대비 조회수 변화</p>", unsafe_allow_html=True)
-            videos = '/\n'.join([p + '->' + t for p, t in zip(plot_df['platform'].unique(), plot_df['title'].unique())])
             # st.write(videos)
 
             def view_div_sub(df):
@@ -504,7 +534,6 @@ if selected == '채널비교(Youtube)':
                 df['view/sub'] = (df['views'].values / np.array(tmp)) 
             view_div_sub(plot_df)         
 
-            # st.dataframe(plot_df) 
             
             fig = go.Figure()
             fig_df1 = plot_df[plot_df['channel_id'] == selected_channels[0]]
@@ -558,13 +587,16 @@ if selected == '채널비교(Youtube)':
             # colors = ['#FF3333', '#33FF99']
             colors = ['green', 'red']
             showlegend = True
-            for idx, (contestant, group) in enumerate(plot_df.groupby("channel_name")):
-                # if idx == 1 :
-                #     showlegend = False
-                # fig2.add_trace(go.Histogram(x=group.index, y=group["likes"], name= '좋아요', showlegend = showlegend, marker={'color': colors[idx]}),secondary_y=False)
-                # fig2.add_trace(go.Scatter(x=group.index, y=group['comments'], name='댓글', showlegend = showlegend, line_color = colors[idx+2]),secondary_y=True)
-                subplot_fig.add_trace(go.Scatter(x=group.index, y=group["likes"], name= '좋아요', showlegend = False, mode='lines+markers', marker={'color': colors[idx]}), row=1,col=2)
-                subplot_fig.add_trace(go.Scatter(x=group.index, y=group['comments'], name='댓글', showlegend = False, mode='lines+markers', line_color = colors[idx]), row=1,col=3)
+            for i in range(2):
+                tmp_df = plot_df[plot_df['channel_id'] == selected_channels[i]]
+
+                for idx, (contestant, group) in enumerate(tmp_df.groupby("channel_name")):
+                    # if idx == 1 :
+                    #     showlegend = False
+                    # fig2.add_trace(go.Histogram(x=group.index, y=group["likes"], name= '좋아요', showlegend = showlegend, marker={'color': colors[idx]}),secondary_y=False)
+                    # fig2.add_trace(go.Scatter(x=group.index, y=group['comments'], name='댓글', showlegend = showlegend, line_color = colors[idx+2]),secondary_y=True)
+                    subplot_fig.add_trace(go.Scatter(x=group.index, y=group["likes"], name= '좋아요', showlegend = False, mode='lines+markers', marker={'color': colors[i]}), row=1,col=2)
+                    subplot_fig.add_trace(go.Scatter(x=group.index, y=group['comments'], name='댓글', showlegend = False, mode='lines+markers', line_color = colors[i]), row=1,col=3)
                 
 
             fig2.update_layout(legend=dict(x=0, y=1.2, orientation="h"))
@@ -582,13 +614,28 @@ if selected == '채널비교(Youtube)':
             subplot_fig.update_traces(marker_line_width=2, marker_size=8)    
             st.plotly_chart(subplot_fig, use_container_width=True)
 
+            # st.dataframe(plot_df[plot_df['channel_name'] == selected_channels[0]])
+
+
             st.markdown("### 영상목록")
-            st.write("<p style=\"font-size:13px; \"> (기본 정렬 기준 - 업로드 영상, 시청수) </p>", unsafe_allow_html=True)
+            select_col_1, select_col_2 = st.columns(2)
+            with select_col_1:
+                select_1 = st.selectbox('데이터 수를 선택해주세요.',([10,50,100, '전체']))
             
+            with select_col_2:
+                select_2 = st.selectbox('정렬 기준을 선택해주세요.', (['시청수', '좋아요수', '댓글수','업로드 시간(최신)']))
+ 
+            
+            select_1 = len(df) if select_1 =='전체' else select_1
+            select_2 = '업로드 시간' if select_2 == '업로드 시간(최신)' else select_2
+                        
             view_df = df[['title', 'views', 'likes', 'comments', 'channel', 'platform', 'upload_time']]
             view_df.columns = ['제목', '시청수', '좋아요수', '댓글수', '채널명', '플랫폼', '업로드 시간']
-            st.dataframe(view_df.reset_index(drop=True).set_index('채널명', drop=True).sort_values(['업로드 시간','시청수'], ascending=False), use_container_width=True)
-            st.write("<p style=\"font-size:26px; \"> 채널별 주요 HashTag 20개 </p>", unsafe_allow_html=True)
+            
+
+            view_df = view_df.reset_index(drop=True).set_index('채널명', drop=True).sort_values([select_2], ascending=False)            
+            st.dataframe(view_df[:select_1], use_container_width=True)
+            st.write("**<p style=\"font-size:26px; \"> 채널별 주요 HashTag 20개 </p>**", unsafe_allow_html=True)
 
             from plotly_wordcloud import plotly_wordcloud as pwc
             import matplotlib.pyplot as plt
@@ -617,14 +664,14 @@ if selected == '부정어 블락처리':
 
     # 2. 현재 DB에 있는 부정어 사전 보여주기
     st.markdown("<p align='left'> <font size = '5'> 2. 해당 채널의 부정어 DB </font></p>", unsafe_allow_html=True)
-    st.write('부정어로 등록된 단어들이 포함된 댓글들은 화면에서 보여지지 않습니다. 검토 대기중으로 처리되어 담당자의 승인 후 화면에서 보여지게 됩니다.')
+    st.write('⚠️ 부정어로 등록된 단어들이 포함된 댓글들은 화면에서 보여지지 않습니다. 검토 대기중으로 처리되어 담당자의 승인 후 화면에서 보여지게 됩니다.')
     now_list = get_block_wordlist(channel_option) # 해당 채널 DB에 있는 단어들 모으기
     
     if len(now_list)==0 :
         st.info('현재 해당 채널의 부정어는 0개 입니다.')
     else :
-        now_list = ','.join(now_list)
-        st.info(now_list)
+        join_now_list = ','.join(now_list)
+        st.info(join_now_list)
     st.subheader('')
 
 
@@ -633,31 +680,40 @@ if selected == '부정어 블락처리':
     st.markdown("<p align='left'> <font size = '5'> 3. 부정어 후보 단어들  </font></p>", unsafe_allow_html=True)
     st.write('최신 댓글들을 바탕으로한 부정어 단어 후보입니다. 단어를 선택하면 해당 단어가 들어가 있는 부정댓글들을 일부 확인 할 수 있습니다. ')
 
+    with st.spinner("댓글 수집 중입니다. 잠시만 기다려주세요. ") :
+        # 부정어 사전 계산 코드
+        unpopular_df, popular_df = negdict_get_comment(channel_id) # 해당 비디오 댓글 수집
+        popular_id = popular_df['video_id'][0]
+        unpopular_id = unpopular_df['video_id'][0]
+    # st.write(popular_id)
+    # st.write(unpopular_id)
+    
+        #댓글 전처리
+        popular_df = preprocessing(popular_df)
+        unpopular_df = preprocessing(unpopular_df)
+    
+    with st.spinner('댓글 언어 판별 중입니다. 잠시만 기다려주세요.'):
+        #댓글 언어 판별
+        popular_df = identify_lang(popular_df)
+        unpopular_df = identify_lang(unpopular_df)
 
-    # 부정어 사전 계산 코드
-    unpopular_df, popular_df = negdict_get_comment(channel_id) # 해당 비디오 댓글 수집
-    popular_id = popular_df['video_id'][0]
-    unpopular_id = unpopular_df['video_id'][0]
-    #댓글 전처리
-    popular_df = preprocessing(popular_df)
-    unpopular_df = preprocessing(unpopular_df)
-    #댓글 언어 판별
-    popular_df = identify_lang(popular_df)
-    unpopular_df = identify_lang(unpopular_df)
-    #감정분석 진행
-    model, device, tokenizer = load_model()
-    popular_df.loc[popular_df['lang'] == 'ko', 'sentiment'] = popular_df[popular_df['lang'] == 'ko']['demoji_text'].apply(analyze_korean_sentiment,args= (model,device, tokenizer))
-    unpopular_df.loc[unpopular_df['lang'] == 'ko', 'sentiment'] = unpopular_df[unpopular_df['lang'] == 'ko']['demoji_text'].apply(analyze_korean_sentiment,args= (model,device, tokenizer)) 
-    #mecab 사용
-    popular_mecab_df, popular_mecab_nouns = mecab_pos(popular_df)
-    unpopular_mecab_df, unpopular_mecab_nouns = mecab_pos(unpopular_df)
-    mecab_neg_list = mecab_diff_set(popular_mecab_nouns, unpopular_mecab_nouns) 
-    #okt 사용
-    popular_okt_df, popular_okt_nouns = okt_pos(popular_mecab_df) #시간 좀 걸림
-    unpopular_okt_df, unpopular_okt_nouns = okt_pos(unpopular_mecab_df) 
-    okt_neg_list = okt_diff_set(popular_okt_nouns, unpopular_okt_nouns) 
-    # mecab, okt 교집합
-    meokt_with_counts = mecab_okt_intersection(mecab_neg_list, okt_neg_list)
+    with st.spinner('댓글 감성 분석 중입니다. 잠시만 기다려주세요. '):
+        #감정분석 진행
+        model, device, tokenizer = load_model()
+        popular_df.loc[popular_df['lang'] == 'ko', 'sentiment'] = popular_df[popular_df['lang'] == 'ko']['demoji_text'].apply(analyze_korean_sentiment,args= (model,device, tokenizer))
+        unpopular_df.loc[unpopular_df['lang'] == 'ko', 'sentiment'] = unpopular_df[unpopular_df['lang'] == 'ko']['demoji_text'].apply(analyze_korean_sentiment,args= (model,device, tokenizer)) 
+    
+    with st.spinner('부정어 단어 후보들을 추출하는 중입니다. 잠시만 기다려주세요. '):
+        #mecab 사용
+        popular_mecab_df, popular_mecab_nouns = mecab_pos(popular_df)
+        unpopular_mecab_df, unpopular_mecab_nouns = mecab_pos(unpopular_df)
+        mecab_neg_list = mecab_diff_set(popular_mecab_nouns, unpopular_mecab_nouns) 
+        #okt 사용
+        popular_okt_df, popular_okt_nouns = okt_pos(popular_mecab_df) #시간 좀 걸림
+        unpopular_okt_df, unpopular_okt_nouns = okt_pos(unpopular_mecab_df) 
+        okt_neg_list = okt_diff_set(popular_okt_nouns, unpopular_okt_nouns) 
+        # mecab, okt 교집합
+        meokt_with_counts = mecab_okt_intersection(mecab_neg_list, okt_neg_list)
     final_list = []
     for tup in meokt_with_counts:
         final_list.append(tup[0])
@@ -672,14 +728,15 @@ if selected == '부정어 블락처리':
         if pre_word in comment_list:
             comments = comment_list[pre_word]
             st.write(' ')
-            st.write(f"댓글 예시 ({pre_word}) :")
-            temp = ''
-            for comment in comments:
-                temp+="⦁  "+comment+"  \n"
-                #st.write("&emsp; => "+comment)
-            st.success(temp)
+            my_expander_3 = st.expander(label=(f'"{pre_word}" 단어가 포함된 부정적 댓글 예시'))
+            with my_expander_3:
+                for comment in comments:
+                    st.write("- "+ comment)
         else:
             st.write("선택된 단어에 대한 댓글이 없습니다.")
+
+
+
 
     st.subheader('')
     # 4. DB에 부정어 등록, 제거
@@ -688,7 +745,7 @@ if selected == '부정어 블락처리':
     c11,c12 = c1.columns([4,1])
     c11.markdown("<p align='left'> <font size = '4'> &emsp;➕ &emsp;  부정어 단어 등록  </font></p>", unsafe_allow_html=True)
     register_btn= c12.button('등록')
-    add_word = c1.text_input('부정어로 등록할 단어를 입력해주세요.')
+    add_word = c1.text_input('부정어로 등록할 단어를 입력한 후 등록 버튼을 눌러주세요.')
     if add_word != "" and register_btn:
         result = register_block_word(add_word, channel_option)
         if result: # 위과정 잘 실행되면
@@ -697,11 +754,12 @@ if selected == '부정어 블락처리':
     c21,c22 = c2.columns([4,1])
     c21.markdown("<p align='left'> <font size = '4'> &emsp;➖ &emsp; 부정어 단어 삭제  </font></p>", unsafe_allow_html=True)
     delete_btn= c22.button('삭제')
-    out_word = c2.text_input('부정어에서 취소할 단어를 입력해주세요.')
+    out_word = c2.selectbox('부정어에서 삭제할 단어를 선택한 후 삭제 버튼을 눌러주세요. ',now_list)
     if out_word != "" and delete_btn:
         result = delete_block_word(out_word, channel_option)
         if result: # 위과정 잘 실행되면
                 c2.write(f'"{out_word}" 단어를 {channel_option} 채널의 부정어에서 삭제했습니다.')
     st.subheader('')
+
 
 
