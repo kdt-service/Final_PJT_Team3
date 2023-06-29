@@ -61,7 +61,7 @@ plotly을 이용한 데이터 시각화, streamlit를 통한 대시보드 제작
 
 
 ## ERD 
---추가
+![FINAL_ERD](https://github.com/kdt-service/Final_PJT_Team3/assets/123911402/d86e629d-b0bd-4180-9c54-69f3d468d254)
 
 ## Contributors 
 문다은 https://github.com/daeun-moon   
