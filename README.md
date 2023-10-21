@@ -59,9 +59,6 @@ Null값 제거, 중복 댓글 제거, 한글자 댓글 제거, html 태그 제�
 plotly을 이용한 데이터 시각화, streamlit를 통한 대시보드 제작
 
 
-## ERD 
-![FINAL_ERD](https://github.com/kdt-service/Final_PJT_Team3/assets/123911402/d86e629d-b0bd-4180-9c54-69f3d468d254)
-
 ## Contributors 
 문다은 https://github.com/daeun-moon   
 이석호 https://github.com/LSH0414   
