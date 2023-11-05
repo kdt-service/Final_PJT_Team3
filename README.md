@@ -13,7 +13,7 @@
 
 ## Overview 
 
-![final_project process](https://github.com/kdt-service/Final_PJT_Team3/assets/123911402/0ff530e3-45a9-4cbe-bb47-b186da107ef2)
+![youtube_proejct erd](https://github.com/kdt-service/Final_PJT_Team3/assets/84755366/0a0801b2-27b4-4dae-ba8f-a7e1cae329c2)
 
 ## Demo 
 http://15.152.250.135:8501/ 
