@@ -5,18 +5,24 @@
 
 ## Table Of Contents
 [1. Overview](#overview)  
-[2. Demo](#demo)  
+[2. Streamlit Dashboard Video](#streamlit)  
 [3. Main Features](#main-features)  
 [4. Stack](#stack)  
-[5. ERD](#erd)  
-[6. Contributors](#contributors)  
+[5. Contributors](#contributors)  
 
 ## Overview 
 
 ![youtube_proejct erd](https://github.com/kdt-service/Final_PJT_Team3/assets/84755366/0a0801b2-27b4-4dae-ba8f-a7e1cae329c2)
 
-## Demo 
-http://15.152.250.135:8501/ 
+## Streamlit
+- 개인채널 페이지     
+![youtube_개인채널_cut](https://github.com/kdt-service/Final_PJT_Team3/assets/84755366/c9bf66b2-3913-4d54-8f53-32dc2e290ee1)
+
+- 채널비교 페이지
+![youtube_채널비교_cut](https://github.com/kdt-service/Final_PJT_Team3/assets/84755366/a1e628e0-f743-44ef-a1a9-d1b6a8112656)
+
+- 부정어 단어 블락 페이지
+![youtube_블락처리_cut](https://github.com/kdt-service/Final_PJT_Team3/assets/84755366/a48431e4-b383-49ac-b48f-f21a1b61cde4)
 
 ## Main Features 
 - 채널 분석 (최근 업로드한 5개 영상)
