@@ -15,11 +15,13 @@
 
 
 ## Streamlit
-- 개인채널 페이지     
-https://github.com/kdt-service/Final_PJT_Team3/assets/84755366/1a03c041-4f73-4010-9aa3-9329667b6f3c
+- 개인채널 페이지
+![youtube_개인채널](https://github.com/kdt-service/Final_PJT_Team3/assets/84755366/86cf012e-ccca-4c85-9a00-1ca4cf2109fb)
+  
 - 채널비교 페이지
+![youtube_채널비교](https://github.com/kdt-service/Final_PJT_Team3/assets/84755366/8d3f4e85-2895-4b6b-b03a-a08d43db8ef7)
+  
 - 부정어 단어 블락 페이지
-
 ![youtube_블락처리](https://github.com/kdt-service/Final_PJT_Team3/assets/84755366/40dd6f21-80b4-43da-9925-638a754864dc)
 
 
